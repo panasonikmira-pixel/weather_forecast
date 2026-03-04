@@ -1,0 +1,86 @@
+HTML: 
+
+<div class="weather-radar-box">
+    <div id="radar-map"></div>
+</div>
+
+
+JS:
+
+const radarMap = L.map("radar-map").setView([52.0, 19.0], 6);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19
+}).addTo(radarMap);
+
+const precipitation = L.tileLayer(
+    `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`,
+    { opacity: 0.8 }
+).addTo(radarMap);
+
+const clouds = L.tileLayer(
+    `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${apiKey}`,
+    { opacity: 0.7 }
+);
+
+const wind = L.tileLayer(
+    `https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${apiKey}`,
+    { opacity: 0.9 }
+);
+
+L.control.layers(
+    { "Opady": precipitation, "Chmury": clouds, "Wiatr": wind },
+    {}
+).addTo(radarMap);
+
+// Animacja radarowa
+const radarFrames = [];
+let currentFrame = 0;
+let radarLayer = null;
+
+async function loadRadarFrames() {
+    const now = Math.floor(Date.now() / 1000);
+
+    for (let i = 9; i >= 0; i--) {
+        const timestamp = now - i * 600;
+
+        const frameUrl =
+            `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}&ts=${timestamp}`;
+
+        radarFrames.push(
+            L.tileLayer(frameUrl, { opacity: 0.6 })
+        );
+    }
+
+    startRadarAnimation();
+}
+
+function startRadarAnimation() {
+    if (radarFrames.length === 0) return;
+
+    radarLayer = radarFrames[0].addTo(radarMap);
+
+    setInterval(() => {
+        radarMap.removeLayer(radarLayer);
+        currentFrame = (currentFrame + 1) % radarFrames.length;
+        radarLayer = radarFrames[currentFrame].addTo(radarMap);
+    }, 700);
+}
+
+loadRadarFrames();
+
+CSS:
+
+.weather-radar-box {
+    width: 100%;
+    height: 300px;
+    background: rgba(6, 121, 159, 0.6);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.25);
+}
+
+#radar-map {
+    width: 100%;
+    height: 100%;
+}
