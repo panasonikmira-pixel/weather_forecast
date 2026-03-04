@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pogoda 24</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<div class="layout-wrapper">
+<div class="video-bg">
+    <video id="bgVideo" autoplay muted loop playsinline>
+        <source id="bgSource" src="img/clovercloud.mp4" type="video/mp4">
+    </video>
+</div>
+
+
+
+    <header class="header-bar">
+        <div class="logo">Pogoda 24</div>
+
+        <nav class="nav-menu">
+            <span>RANDOM</span>
+            <span>RANDOM</span>
+            <span>RANDOM</span>
+            <span>RANDOM</span>
+            <span>RANDOM</span>
+        </nav>
+
+        <div class="header-icons">
+            <div class="header-icon"><img src="img/user.png" width="25"></div>
+            <div class="header-icon"><img src="img/messege.png" width="25"></div>
+        </div>
+    </header>
+
+
+    <section class="weather-panel">
+
+    <div class="weather-panel__left">
+        
+        <div id="weatherData"></div>
+    </div>
+
+    <div class="weather-panel__right">
+        <div class="weather-search">
+            <input type="text" id="cityInput" placeholder="Wpisz miasto">
+            <button id="getWeatherBtn">Pobierz pogodę</button>
+        </div>
+
+        <div class="weather-radar-box">
+            <div id="radar-map"></div>
+        </div>
+    </div>
+
+</section>
+
+
+    <section class="forecast-section">
+        <div class="forecast-board">
+            <div id="forecast-week"></div>
+        </div>
+    </section>
+
+</div>
+
+<footer class="footer"></footer>
+
+<script src="script.js"></script>
+</body>
+</html>
