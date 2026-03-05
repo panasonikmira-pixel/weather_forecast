@@ -1,0 +1,78 @@
+JS:
+
+const errorMessages = {
+    100: "Kontynuacja żądania...",
+    101: "Protokół został zmieniony.",
+    102: "Serwer przetwarza żądanie...",
+
+    200: "Żądanie zakończone sukcesem.",
+    201: "Utworzono nowy zasób.",
+    204: "Brak danych do wyświetlenia.",
+
+    300: "Wymagane dalsze działania (redirect).",
+    301: "Zasób został przeniesiony na stałe.",
+    302: "Zasób znajduje się pod innym adresem.",
+    304: "Brak zmian od ostatniego pobrania.",
+
+    400: "Błędne zapytanie sprawdź poprawność danych.",
+    401: "Brak autoryzacji sprawdź klucz API.",
+    403: "Brak dostępu do zasobu.",
+    404: "Nie znaleziono miasta.",
+    429: "Zbyt wiele zapytań spróbuj ponownie później.",
+
+    500: "Błąd serwera spróbuj ponownie później.",
+    501: "Funkcja nie jest wspierana przez serwer.",
+    502: "Zła odpowiedź serwera.",
+    503: "Serwer niedostępny.",
+    504: "Przekroczono czas oczekiwania na odpowiedź."
+};
+
+
+
+
+			getWeather():
+try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        const code = response.status;
+        const message = errorMessages[code] || `Nieznany błąd (${code})`;
+        throw new Error(message);
+    }
+
+    const data = await response.json();
+    displayWeather(data);
+    getWeekForecast(data.coord.lat, data.coord.lon);
+
+} catch (error) {
+    weatherBox.innerHTML =
+        `<p style="color:red; font-size:20px;">${error.message}</p>`;
+}
+
+
+
+         getWeekForecast():
+
+try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        const code = response.status;
+        const message = errorMessages[code] || `Nieznany błąd (${code})`;
+        throw new Error(message);
+    }
+
+    const data = await response.json();
+    displayWeekForecast(data.list);
+
+} catch (error) {
+    forecastBox.innerHTML =
+        `<p style="color:red;">${error.message}</p>`;
+}
+
+
+
+
+
+
+
